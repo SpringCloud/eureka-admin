@@ -5,6 +5,14 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   
+  	<modules>
+		<module>eureka-admin-sample</module>
+		<module>eureka-admin-view</module>
+		<module>eureka-admin-utils</module>
+		<module>eureka-admin-starter-server</module>
+		<module>eureka-admin-starter-client</module>
+	</modules>
+  
   	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -36,13 +44,5 @@
 			</plugin>
 		</plugins>
 	</build>
-	<modules>
-		<module>eureka-admin-view</module>
-		<module>eureka-admin-core</module>
-		<module>eureka-admin-starter</module>
-		<module>eureka-admin-starter-server</module>
-		<module>eureka-admin-utils</module>
-		<module>eureka-admin-starter-client</module>
-		<module>eureka-admin-sample</module>
-	</modules>
+
 </project>
