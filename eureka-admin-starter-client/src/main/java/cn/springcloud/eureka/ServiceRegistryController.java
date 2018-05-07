@@ -45,5 +45,4 @@ public class ServiceRegistryController {
 		instanceInfo.setStatus(InstanceStatus.toEnum(status));
 		return ResultMap.buildSuccess();
 	}
-	
 }

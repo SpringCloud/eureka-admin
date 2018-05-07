@@ -24,10 +24,6 @@ public class EurekaClientController {
 	
 	/**
 	 * @description 获取服务数量和节点数量
-	 * @author fuwei.deng
-	 * @date 2017年7月21日 下午3:36:24
-	 * @version 1.0.0
-	 * @return
 	 */
 	@RequestMapping(value = "home", method = RequestMethod.GET)
 	public ResultMap home(){
@@ -49,10 +45,6 @@ public class EurekaClientController {
 	
 	/**
 	 * @description 获取所有服务节点
-	 * @author fuwei.deng
-	 * @date 2017年7月21日 下午3:36:38
-	 * @version 1.0.0
-	 * @return
 	 */
 	@RequestMapping(value = "apps", method = RequestMethod.GET)
 	public ResultMap apps(){
@@ -72,6 +64,9 @@ public class EurekaClientController {
 		return ResultMap.buildSuccess().put("list", apps);
 	}
 	
+	/**
+	 * @description 界面请求转到第三方服务进行状态变更
+	 */
 	@RequestMapping(value = "status/{appName}", method = RequestMethod.POST)
 	public ResultMap status(@PathVariable String appName, String instanceId, String status){
 		Application application = eurekaClient.getApplication(appName);

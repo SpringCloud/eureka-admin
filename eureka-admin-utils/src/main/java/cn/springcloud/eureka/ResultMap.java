@@ -4,7 +4,6 @@ import org.springframework.ui.ModelMap;
 
 public class ResultMap extends ModelMap {
 
-	/** */
 	private static final long serialVersionUID = 5898506914945717989L;
 	
 	public static final String CODE_SUCCESS = "success";
