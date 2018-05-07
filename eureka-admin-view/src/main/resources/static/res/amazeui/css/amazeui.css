@@ -3154,7 +3154,7 @@ fieldset[disabled] .am-checkbox-inline {
   }
   .am-topbar-collapse.am-collapse {
     display: block !important;
-    height: auto !important;
+    height: auto !important; 
     padding: 0;
     overflow: visible !important;
   }

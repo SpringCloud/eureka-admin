@@ -1,5 +1,5 @@
 <div class="am-cf am-padding-left-xs">
-	<strong class="am-text-primary am-text-default">Eureka Admin</strong> / <small>Admin</small>
+	<strong class="am-text-primary am-text-default"> Eureka Admin</strong> / <small>Service Admin</small>
 </div>
 <hr class="am-margin-0" />
 <form class="am-form am-form-horizontal am-margin-xs" role="form" method="post" action="" id="conditionForm">
@@ -52,7 +52,7 @@
 			        <th>ServiceId</th>
 			        <th>Status</th>
 			        <th>IP</th>
-			        <th>instanceId</th>
+			        <th>InstanceId</th>
 			        <th>Register Time</th>
 			        <th>Enable Time</th>
 			        <th>Update Time</th>
@@ -137,7 +137,7 @@
 			dataType: 'json',
 			success: function(data){
 				if(!data.list || data.list.length < 1){
-					$('#dataList').html('<tr><td class="am-text-center" colspan="10">没有查询到符合条件的数据</td></tr>');
+					$('#dataList').html('<tr><td class="am-text-center" colspan="10">No Service Registry</td></tr>');
 					return false;
 				}
 				for(var i=0; i<data.list.length; i++){

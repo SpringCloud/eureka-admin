@@ -118,6 +118,9 @@ ul {
 .admin-content-footer {
 	font-size: 85%;
 	color: #777;
+	position: fixed;
+	bottom: 0;
+	width: 100%;
 }
 
 .admin-content-list {
@@ -369,6 +372,6 @@ gallery.html css
 	line-height: 1.2;
 }
 
-.admin-sidebar-list li.am-active {background: #373C64;}
+.admin-sidebar-list li.am-active {background: #6db33f;}
 .admin-sidebar-list li.am-active a{color: #FFF;}
 .am-text-grey{color:#5d5d5d;}

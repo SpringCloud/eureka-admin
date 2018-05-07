@@ -1,6 +1,6 @@
 <div class="am-cf am-padding-xs">
 	<div class="am-fl am-cf">
-		<strong class="am-text-primary am-text-lg">Eureka Admin</strong> / <small>Dashboard</small>
+		<strong class="am-text-primary am-text-lg"> Eureka Admin</strong> / <small>Dashboard</small>
 	</div>
 </div>
 <ul class="am-avg-sm-1 am-avg-md-3 am-margin-xs am-padding-xs am-text-center admin-content-list ">
@@ -52,7 +52,7 @@
 			dataType: 'json',
 			success: function(data){
 				$('.countView').each(function(){
-					$(this).text(data[$(this).attr('id')] || '暂不支持');
+					$(this).text(data[$(this).attr('id')] || 'empty');
 				});
 			}
 		});
