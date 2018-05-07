@@ -1,0 +1,200 @@
+<div class="am-cf am-padding-left-xs">
+	<strong class="am-text-primary am-text-default">Eureka Admin</strong> / <small>Admin</small>
+</div>
+<hr class="am-margin-0" />
+<form class="am-form am-form-horizontal am-margin-xs" role="form" method="post" action="" id="conditionForm">
+	<ul class="am-avg-sm-1 am-avg-md-2 am-avg-lg-4 am-thumbnails">
+		<li class="am-padding-0">
+			<div class="am-form-group am-form-group-sm">
+				<label for="name" class="am-u-sm-4 am-form-label">ServiceId</label>
+				<div class="am-u-sm-8">
+					<input type="text" class="am-form-field" name="name" />
+				</div>
+			</div>
+		</li>
+		<li class="am-padding-0">
+			<div class="am-form-group am-form-group-sm">
+				<label for="ip" class="am-u-sm-4 am-form-label">IP</label>
+				<div class="am-u-sm-8">
+					<input type="text" class="am-form-field" name="ip" />
+				</div>
+			</div>
+		</li>
+		<li class="am-padding-0">
+			<div class="am-form-group am-form-group-sm">
+				<label for="status" class="am-u-sm-4 am-form-label">Status</label>
+				<div class="am-u-sm-8">
+					<select class="am-input-sm" name="status">
+						<option value="">ALL</option>
+						<option value="UP">UP</option>
+						<option value="DOWN">DOWN</option>
+						<option value="STARTING">STARTING</option>
+						<option value="OUT_OF_SERVICE">OUT_OF_SERVICE</option>
+						<option value="UNKNOWN">UNKNOWN</option>
+					</select>
+				</div>
+			</div>
+		</li>
+	</ul>
+	<div class="am-text-right">
+		<button type="button" class="am-btn am-btn-primary am-btn-xs am-margin-right-xs" id="filterBtn">Filter</button>
+		<button type="button" class="am-btn am-btn-primary am-btn-xs am-margin-right-xs" id="refreshBtn">Refresh</button>
+		<button type="reset" class="am-btn am-btn-default am-btn-xs">Reset</button>
+	</div>
+</form>
+<div class="am-panel am-panel-default am-border-top-0">
+	<div class="am-panel-bd am-padding-xs am-padding-bottom-0 am-scrollable-horizontal">
+		<table class="am-table am-table-bordered am-table-compact am-table-striped am-table-hover am-text-nowrap">
+			<thead>
+			    <tr>
+			    	<th><input type="checkbox"/></th>
+			    	<th>Handle</th>
+			        <th>ServiceId</th>
+			        <th>Status</th>
+			        <th>IP</th>
+			        <th>instanceId</th>
+			        <th>Register Time</th>
+			        <th>Enable Time</th>
+			        <th>Update Time</th>
+			        <th>Refresh Time Interval</th>
+			    </tr>
+			</thead>
+			<tbody id="dataList"></tbody>
+		</table>
+	</div>
+</div>
+<script id="listTmpl" type="text/html">
+{{# for(var i = 0, len = d.list.length; i < len; i++){ }}
+	{{# for(var j = 0, len2 = d.list[i].instance.length; j < len2; j++){ }}
+<tr data-name="{{ d.list[i].name }}" data-ip="{{ d.list[i].instance[j].ipAddr }}" data-status="{{ d.list[i].instance[j].status }}">
+	<td class="">
+		<input type="checkbox" value="{{ d.list[i].name }}"/>
+	</td>
+	<td class="am-padding-0">
+		{{# if(d.list[i].instance[j].status == 'UP'){ }}
+		<button type="button" class="am-btn am-btn-primary am-btn-xs toDisable" data-app="{{ d.list[i].name }}" data-id="{{ d.list[i].instance[j].instanceId }}">Disable</button>
+		{{# } else { }}
+		<button type="button" class="am-btn am-btn-primary am-btn-xs toEnable" data-app="{{ d.list[i].name }}" data-id="{{ d.list[i].instance[j].instanceId }}">Enable</button>
+		{{# } }}
+	</td>
+	<td class="">{{ d.list[i].name }}</td>
+	<td class="">{{ d.list[i].instance[j].status }}</td>
+	<td class="">{{ d.list[i].instance[j].ipAddr }}</td>
+	<td class="">{{ d.list[i].instance[j].instanceId }}</td>
+	<td class="">{{ d.list[i].instance[j].leaseInfo.registrationTimestamp }}</td>
+	<td class="">{{ d.list[i].instance[j].leaseInfo.serviceUpTimestamp }}</td>
+	<td class="">{{ d.list[i].instance[j].lastUpdatedTimestamp }}</td>
+	<td class="">{{ d.list[i].instance[j].leaseInfo.renewalIntervalInSecs }}</td>
+</tr>
+	{{# } }}
+{{# } }}
+</script>
+<script>
+(function(){
+	$(function(){
+		query();
+	});
+	
+	$('#refreshBtn').on('click', function(){
+		query();
+	});
+	
+	/**
+	 * 纯前端实现的条件过滤
+	 */
+	$('#filterBtn').on('click', function(){
+		var name = $('#conditionForm input[name="name"]').val();
+		var ip = $('#conditionForm input[name="ip"]').val();
+		var status = $('#conditionForm select[name="status"]').val();
+		
+		$('#dataList tr').removeClass('am-hide');
+		$('#dataList tr').removeClass('nameSuitable');
+		$('#dataList tr').removeClass('ipSuitable');
+		$('#dataList tr').removeClass('statusSuitable');
+		if(name || ip || status){
+			$('#dataList tr').addClass('am-hide');
+		} else{
+			$('#dataList tr').removeClass('am-hide');
+			return ;
+		}
+		
+		$('#dataList tr').each(function(){
+			$(this).addClass($(this).data('name') == name ? 'nameSuitable' : '');
+			$(this).addClass($(this).data('ip') == ip ? 'ipSuitable' : '');
+			$(this).addClass($(this).data('status') == status ? 'statusSuitable' : '');
+		});
+		var tr = $('#dataList tr');
+		tr = name ? tr.filter('.nameSuitable') : tr;
+		tr = ip ? tr.filter('.ipSuitable') : tr;
+		tr = status ? tr.filter('.statusSuitable') : tr;
+		tr.removeClass('am-hide');
+	});
+	
+	function query(page, size){
+		$('#conditionForm').ajaxSubmit({
+			url: '/eureka/apps',
+			type: 'get',
+			dataType: 'json',
+			success: function(data){
+				if(!data.list || data.list.length < 1){
+					$('#dataList').html('<tr><td class="am-text-center" colspan="10">没有查询到符合条件的数据</td></tr>');
+					return false;
+				}
+				for(var i=0; i<data.list.length; i++){
+					for(var j=0; j<data.list[i].instance.length; j++){
+						data.list[i].instance[j].json = JSON.stringify(data.list[i].instance[j]);
+						data.list[i].instance[j].leaseInfo.registrationTimestamp = $.dateformat(data.list[i].instance[j].leaseInfo.registrationTimestamp)
+						data.list[i].instance[j].lastUpdatedTimestamp = $.dateformat(data.list[i].instance[j].lastUpdatedTimestamp)
+						data.list[i].instance[j].leaseInfo.serviceUpTimestamp = $.dateformat(data.list[i].instance[j].leaseInfo.serviceUpTimestamp)
+					}
+				}
+				$('#dataList').tmpl($('#listTmpl').html(), data);
+			}
+		});
+	}
+	
+	$('#dataList').on('click', '.toEnable', function(){
+		var id = $(this).data('id');
+		var app = $(this).data('app');
+		layer.confirm('确定要启用：' + id + '？', function(index){
+		    layer.close(index);
+		    
+		    $.ajax({
+				url: '/eureka/status/' + app,
+				type: 'post',
+				dataType: 'json',
+				data: {
+					status: 'UP',
+					instanceId: id
+				},
+				success: function(data){
+					query();
+				}
+			});
+		});
+	});
+	
+	$('#dataList').on('click', '.toDisable', function(){
+		var id = $(this).data('id');
+		var app = $(this).data('app');
+		layer.confirm('确定要禁用：' + id + '？', function(index){
+		    layer.close(index);
+		    
+		    $.ajax({
+				url: '/eureka/status/' + app,
+				type: 'post',
+				dataType: 'json',
+				data: {
+					status: 'OUT_OF_SERVICE',
+					instanceId: id
+				},
+				success: function(data){
+					query();
+				}
+			});
+		});
+	});
+})();
+</script>
+</body>
+</html>

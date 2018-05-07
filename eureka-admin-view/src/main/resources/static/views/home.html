@@ -1,0 +1,61 @@
+<div class="am-cf am-padding-xs">
+	<div class="am-fl am-cf">
+		<strong class="am-text-primary am-text-lg">Eureka Admin</strong> / <small>Dashboard</small>
+	</div>
+</div>
+<ul class="am-avg-sm-1 am-avg-md-3 am-margin-xs am-padding-xs am-text-center admin-content-list ">
+	<li>
+		<a href="javascript:void(0);" class="am-text-success">
+			<span class="am-icon-btn am-icon-user"></span><br />
+			Service Count<br />
+			<span id="appCount" class="countView"></span>
+		</a>
+	</li>
+	<li>
+		<a href="javascript:void(0);" class="am-text-warning">
+			<span class="am-icon-btn am-icon-briefcase"></span><br />
+			Node Count<br />
+			<span id="nodeCount" class="countView"></span>
+		</a>
+	</li>
+	<li>
+		<a href="javascript:void(0);" class="am-text-secondary">
+			<span class="am-icon-btn am-icon-recycle"></span><br />
+			Available Node Count<br />
+			<span id="enableNodeCount" class="countView"></span>
+		</a>
+	</li>
+</ul>
+<div class="am-g">
+	<div class="am-u-md-12 am-padding-xs">
+		<div class="am-panel am-panel-default">
+			<div class="am-panel-hd am-cf" data-am-collapse="{target: '#collapse-panel-4'}">
+				Messages<span class="am-icon-chevron-down am-fr"></span>
+			</div>
+			<div id="collapse-panel-4" class="am-panel-bd am-collapse am-in">
+				<ul class="am-list admin-content-task">
+					<li>
+						<div class="admin-task-meta">2018-05-07 10:35:23 www.springcloud.cn</div>
+						<div class="admin-task-bd">v1.0.0</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+(function(){
+	$(function(){
+		$.ajax({
+			url: '/eureka/home',
+			type: 'get',
+			dataType: 'json',
+			success: function(data){
+				$('.countView').each(function(){
+					$(this).text(data[$(this).attr('id')] || '暂不支持');
+				});
+			}
+		});
+	});
+})();
+</script>

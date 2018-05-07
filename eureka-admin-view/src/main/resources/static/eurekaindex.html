@@ -1,0 +1,140 @@
+<!doctype html>
+<html class="no-js fixed-layout">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Eureka Admin</title>
+	<meta name="description" content="eureka注册中心服务管理">
+	<meta name="keywords" content="index">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<link rel="stylesheet" href="./res/amazeui/css/amazeui.min.css" />
+	<link rel="stylesheet" href="./res/amazeui/css/admin.css" />
+</head>
+<body class="am-text-sm">
+<!--[if lte IE 9]>
+<p class="browsehappy">你正在使用<strong>过时</strong>的浏览器，Amaze UI 暂不支持。 请 <a href="http://browsehappy.com/" target="_blank">升级浏览器</a>
+  以获得更好的体验！</p>
+<![endif]-->
+
+<header class="am-topbar am-text-sm am-margin-bottom-0">
+	<div class="am-topbar-brand">
+		<strong>Eureka Admin</strong> <small id="companyName"></small>
+	</div>
+
+	<button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#topbar-collapse'}">
+		<span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span>
+	</button>
+
+	<div class="am-collapse am-topbar-collapse" id="topbar-collapse">
+		<ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list">
+			<li class="am-dropdown" data-am-dropdown>
+				<a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;"> 
+					<span class="am-icon-user">&nbsp;</span>Lovnx&nbsp;<span class="am-icon-caret-down"></span>
+				</a>
+				<ul class="am-dropdown-content">
+					<li><a href="javascript:void(0);"><span class="am-icon-power-off"></span> Sign Out</a></li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</header>
+<div class="admin-main">
+	<div class="admin-sidebar am-offcanvas" id="admin-offcanvas">
+		<div class="am-offcanvas-bar admin-offcanvas-bar">
+			<ul class="am-list admin-sidebar-list" id="sidebarList"></ul>
+		</div>
+	</div>
+	<!-- content start -->
+	<div class="admin-content">
+		<div class="admin-content-body" id="contentBody"></div>
+		<footer class="admin-content-footer am-text-center" id="footer">
+			<hr class="am-margin-0">
+			<p class="am-padding-left am-margin-xs">©2015-2018 www.springcloud.cn All rights reserved</p>
+		</footer>
+	</div>
+	<!-- content end -->
+</div>
+<a href="#" class="am-icon-btn am-icon-th-list am-show-sm-only admin-menu" data-am-offcanvas="{target: '#admin-offcanvas'}"></a>
+
+<!--[if lt IE 9]>
+	<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+	<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+	<script src="./res/amazeui/js/amazeui.ie8polyfill.min.js"></script>
+<![endif]-->
+
+<!--[if (gte IE 9)|!(IE)]><!-->
+<script src="./res/amazeui/js/jquery.min.js"></script>
+<!--<![endif]-->
+<script src="./res/amazeui/js/amazeui.min.js"></script>
+<script src="./res/layer/layer.js"></script>
+<script src="./res/laytpl/laytpl.js"></script>
+<script src="./res/amazeui/js/app.js"></script>
+<script src="./res/eureka/common.js"></script>
+<!-- jquery-form放common.js后面，因为common.js有对ajax函数的重写，放jquery-form之前才会让ajaxSubmit生效 -->
+<script src="./res/jquery-form/jquery-form-v3.51.0.js"></script>
+<script>
+	(function(){
+		var menus = [{
+			name: 'Dashboard',
+			icon: 'fa-tachometer',
+			url: 'views/home.html'
+		},{
+			name: 'Admin',
+			icon: 'fa-tachometer',
+			url: 'views/services.html'
+		}];
+		
+		function renderMenu(menus, ele){
+			var li = '<li><a href="javascript:void(0);" data-url="{{url}}"><span class="{{icon}}"></span>{{name}}</a></li>';
+			var liParent = '<li class="admin-parent"><a class="am-cf" data-am-collapse="{target: \'#collapse-nav{{name}}\'}">'
+							+ '<span class="{{icon}}"></span> {{name}}'
+							+ '<span class="am-icon-angle-right am-fr am-margin-right"></span>'
+							+ '</a>'
+							+ '<ul class="am-list am-collapse admin-sidebar-sub" id="collapse-nav{{name}}">'
+							+ '</ul></li>';
+			for(var i=0; i<menus.length; i++){
+				var menu = menus[i];
+				var hasChildren = menu.list && menu.list.length > 0;
+				if(hasChildren){
+					(ele || $('#sidebarList')).append($.format(liParent, menu));
+					renderMenu(menu.list, $('#sidebarList li:last .admin-sidebar-sub'));
+				} else{
+					(ele || $('#sidebarList')).append($.format(li, menu));
+				}
+			}
+		}
+		
+		//绑定菜单点击事件
+		$('#sidebarList').on('click', 'a[data-url]', function(){
+			var url = $(this).data('url');
+			$('#sidebarList').find('li').each(function(){
+				$(this).removeClass('am-active');
+			});
+			$(this).parent().addClass("am-active");
+			$.ajax({
+				url: url,
+				dataType: 'html',
+				cache: false,
+				success: function(data){
+					$('#contentBody').html(data);
+				}
+			});
+			$('#breadcrumbs').text($(this).text());
+		});
+		
+		$(function(){
+			$('#sidebarList').css('height', $(window).height() - 36);
+			$(window).resize(function() {
+				$('#sidebarList').css('height', $(window).height() - 36);
+			});
+			$('#sidebarList').empty();
+			renderMenu(menus);
+			//默认加载第一个菜单页面
+ 			$('#sidebarList a[data-url]:first').trigger('click');
+		});
+	})();
+</script>
+</body>
+</html>

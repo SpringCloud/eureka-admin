@@ -1,0 +1,21 @@
+.dpcity .tabs li a { outline: none; } 
+
+.dpcity .province .pre a , .dpcity .province .pre a:visited, .dpcity .city .pre a , .dpcity .city .pre a:visited, .dpcity .county .pre a , .dpcity .county .pre a:visited { float:left; width:29px; height:109px;background:url(img/bg_mc_0113_4.png) left center no-repeat;}
+.dpcity .province .pre a.can , .dpcity .province .pre a.can:visited, .dpcity .city .pre a.can , .dpcity .city .pre a.can:visited, .dpcity .county .pre a.can , .dpcity .county .pre a.can:visited{background:url(img/bg_mc_0113_4.png) -87px center no-repeat;cursor:pointer;}
+.dpcity .province .next a , .dpcity .province .next a:visited, .dpcity .city .next a , .dpcity .city .next a:visited, .dpcity .county .next a , .dpcity .county .next a:visited{ float:right; width:29px; height:109px;background:url(img/bg_mc_0113_4.png) -58px center no-repeat;}
+.dpcity .province .next a.can , .dpcity .province .next a.can:visited, .dpcity .city .next a.can , .dpcity .city .next a.can:visited, .dpcity .county .next a.can , .dpcity .county .next a.can:visited{background:url(img/bg_mc_0113_4.png) -29px center no-repeat;cursor:pointer;}
+
+.dpcity .hotCity li a.current , .dpcity .hotCity li a .current:visited,
+.dpcity .province li a.current , .dpcity .province li a .current:visited,
+.dpcity .city li a.current , .dpcity .city li a .current:visited,
+.dpcity .county li a.current , .dpcity .county li a .current:visited{color:#449d44; font-weight:bold; }
+
+.dpcity .nav>li>a:hover{border: none; border-color: white; text-decoration: none;}
+.dpcity .nav>li.active>a:hover{ cursor: pointer; border: 1px solid #ddd; border-bottom-color: transparent; text-decoration: none;}
+
+#dimCityQuery { min-width: 18em; }
+#dimCityQuery li a, #dimCityQuery li a:visited { display:block; padding:0 1em; color:#666666; text-decoration:none }
+#dimCityQuery li.current a , #dimCityQuery li.current a:visited { background:#449d44; color:#FFF; font-weight:bold; } 
+#dimCityQuery .page{display: block;text-align:center;}
+#dimCityQuery .page a{margin: 0px 0px;  padding:0px 1em;}
+#dimCityQuery .page .current{color:red;text-decoration: none;}

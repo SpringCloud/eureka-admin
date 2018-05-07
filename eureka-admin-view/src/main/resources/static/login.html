@@ -1,0 +1,100 @@
+<!doctype html>
+<html class="no-js fixed-layout">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>运ZUUL动态路由管理-itopener.com</title>
+	<meta name="description" content="ZUUL动态路由管理-itopener.com">
+	<meta name="keywords" content="index">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<link rel="stylesheet" href="./res/amazeui/css/amazeui.min.css" />
+	<link rel="stylesheet" href="./res/amazeui/css/admin.css" />
+	<style type="text/css">
+		#particles {
+			position: fixed;
+		    top: 0px;
+		    left: 0px;
+		    z-index: -1;
+		    background: #373C64;
+		}
+		.am-login-header {
+			color: #fff;
+		}
+		.am-login {
+			box-shadow: 0 -15px 30px #87C529;
+		    border-radius: 5px;
+		    z-index: 1000;
+		    color: #fff;
+		}
+	</style>
+</head>
+<body>
+<!--[if lte IE 9]>
+<p class="browsehappy">你正在使用<strong>过时</strong>的浏览器，Amaze UI 暂不支持。 请 <a href="http://browsehappy.com/" target="_blank">升级浏览器</a>
+  以获得更好的体验！</p>
+<![endif]-->
+<div id="particles"></div>
+<div class="am-login-header am-text-center am-margin-top-lg">
+	<div class="am-g">
+		<h1>ZUUL动态路由管理</h1>
+		<p>itopener.com</p>
+	</div>
+	<hr />
+</div>
+
+<div class="am-g am-u-lg-3 am-u-md-3 am-u-sm-centered am-padding-top-sm am-login">
+	<form class="am-form am-form-horizontal" id="loginForm">
+		<div class="am-form-group">
+			<label for="loginName" class="am-u-sm-3 am-form-label">用户名</label>
+			<div class="am-u-sm-9">
+				<input type="text" id="loginName" name="loginName" placeholder="请输入用户名或手机号">
+			</div>
+		</div>
+		<div class="am-form-group">
+			<label for="loginPwd" class="am-u-sm-3 am-form-label">密码</label>
+			<div class="am-u-sm-9">
+				<input type="password" id="loginPwd" name="loginPwd" placeholder="请输入登录密码">
+			</div>
+		</div>
+		<div class="am-form-group">
+			<div class="am-u-sm-9 am-u-sm-offset-3">
+				<button type="button" class="am-btn am-btn-sm am-btn-primary">登录</button>
+			</div>
+		</div>
+	</form>
+	<hr class="am-margin-bottom-xs" />
+	<div class="footer am-text-center am-text-xs">
+		<p>©2015-2020 itopener.com All rights reserved</p>
+	</div>
+</div>
+
+<!--[if lt IE 9]>
+	<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+	<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+	<script src="./res/amazeui/js/amazeui.ie8polyfill.min.js"></script>
+<![endif]-->
+
+<!--[if (gte IE 9)|!(IE)]><!-->
+<script src="./res/amazeui/js/jquery.min.js"></script>
+<!--<![endif]-->
+<script src="./res/amazeui/js/amazeui.min.js"></script>
+<script src="./res/jquery-form/jquery-form-v3.51.0.min.js"></script>
+<script src="./res/particle/jquery.particleground.min.js"></script>
+<script>
+(function(){
+	$(function(){
+		$("#particles").width($(window).width());
+		$("#particles").height($(window).height());
+		$("#particles").particleground({
+			dotColor: "#E9E9E9",
+			lineColor: "#E9E9E9",
+			lineWidth: 0.1,
+			particleRadius: 1
+		});
+	});
+})();
+</script>
+</body>
+</html>
