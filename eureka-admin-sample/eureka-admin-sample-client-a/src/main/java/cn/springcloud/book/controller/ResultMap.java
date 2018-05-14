@@ -2,11 +2,6 @@
 //
 //import org.springframework.ui.ModelMap;
 //
-///**  
-// * @author fuwei.deng
-// * @Date 2017年6月9日 下午3:10:58
-// * @version 1.0.0
-// */
 //public class ResultMap extends ModelMap {
 //
 //	/** */
