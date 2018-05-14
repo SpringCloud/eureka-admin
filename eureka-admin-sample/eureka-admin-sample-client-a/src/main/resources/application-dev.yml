@@ -9,3 +9,6 @@ eureka:
       defaultZone: http://localhost:8888/eureka/
   instance:
     prefer-ip-address: true
+management:
+  security:
+    enabled: false
