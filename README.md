@@ -24,7 +24,7 @@ logging:
     org:
       springframework: INFO
 ```
-正常启动主类即可，浏览器访问：http://localhost:8080，效果如下，
+正常启动主类即可，浏览器访问：http://localhost:8080 ，效果如下，
     
 
 ![image](https://github.com/SpringCloud/eureka-admin/blob/master/eureka-admin-sample/eureka-admin-sample-eureka-server/img/Dashboard.png)
