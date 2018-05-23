@@ -18,11 +18,11 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-eureka</artifactId>
 		</dependency>
-		<dependency>
+<!-- 		<dependency>
 			<groupId>cn.springcloud.eureka</groupId>
 			<artifactId>eureka-admin-starter-client</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
+		</dependency> -->
 	</dependencies>
 
 	<build>

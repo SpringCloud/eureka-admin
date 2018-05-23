@@ -2,7 +2,10 @@ package cn.springcloud.eureka.controller;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -72,12 +75,15 @@ public class EurekaClientController {
 		Application application = eurekaClient.getApplication(appName);
 		InstanceInfo instanceInfo = application.getByInstanceId(instanceId);
 		instanceInfo.setStatus(InstanceStatus.toEnum(status));
-		HttpUtil.post(instanceInfo.getHomePageUrl() + "eureka-admin-client/status", "status=" + status);
+		Map<String, String> headers = new HashMap<>();
+		headers.put("Content-Type", "text/plain");
+//		HttpUtil.post(instanceInfo.getHomePageUrl() + "eureka-admin-client/status", "status=" + status);
+		HttpUtil.post(instanceInfo.getHomePageUrl() + "service-registry/instance-status", status, headers);
 		
-		List<InstanceInfo> instanceInfos = application.getInstances();
-		for(InstanceInfo item : instanceInfos){
-			HttpUtil.post(item.getHomePageUrl() + "eureka-admin-client/status/" + appName, "instanceId=" + instanceId + "&status=" + status);
-		}
+//		List<InstanceInfo> instanceInfos = application.getInstances();
+//		for(InstanceInfo item : instanceInfos){
+//			HttpUtil.post(item.getHomePageUrl() + "eureka-admin-client/status/" + appName, "instanceId=" + instanceId + "&status=" + status);
+//		}
 //		Set<String> regions = eurekaClient.getAllKnownRegions();
 //		for(String region : regions){
 //			Applications applications = eurekaClient.getApplicationsForARegion(region);
