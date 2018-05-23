@@ -1,0 +1,17 @@
+server:
+  port: 8080
+eureka:
+  server: 
+    eviction-interval-timer-in-ms: 30000
+  client:
+    register-with-eureka: false
+    fetch-registry: true
+    filterOnlyUpInstances: false
+    serviceUrl:
+       defaultZone: http://localhost:8888/eureka/
+logging:
+  level:
+    com:
+      itopener: DEBUG
+    org:
+      springframework: INFO
