@@ -2,9 +2,9 @@
 # Eureka Admin 管控平台
 #### Eureka Admin 管控平台是Spring Cloud中国社区为Eureka注册中心开源的一个节点监控、服务动态启停的项目。
 ***
-构建步骤：
-1、正常启动您的Eureka以及服务体系
-2、由于目前尚未提交中央仓库，需下载源码构建，打开eureka-admin-starter-server项目配置文件，设置您的eureka注册中心地址以及eureka-admin管控平台端口即可，如下，
+构建步骤：  
+1、正常启动您的Eureka以及服务体系  
+2、由于目前尚未提交中央仓库，需下载源码构建，打开eureka-admin-starter-server项目配置文件，设置您的eureka注册中心地址以及eureka-admin管控平台端口即可，如下，  
 ```
 server:
   port: 8080
