@@ -19,8 +19,6 @@ eureka:
        defaultZone: http://localhost:8888/eureka/
 logging:
   level:
-    com:
-      itopener: DEBUG
     org:
       springframework: INFO
 ```
