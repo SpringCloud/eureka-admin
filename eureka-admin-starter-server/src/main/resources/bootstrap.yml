@@ -8,7 +8,8 @@ eureka:
     fetch-registry: true
     filterOnlyUpInstances: false
     serviceUrl:
-       defaultZone: http://localhost:8888/eureka/
+#       defaultZone: http://localhost:8888/eureka/
+       defaultZone: http://freemud:freemud123@111.231.12.200:9130/eureka/
 logging:
   level:
     com:

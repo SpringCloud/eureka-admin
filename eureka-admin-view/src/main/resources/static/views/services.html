@@ -8,7 +8,7 @@
 			<div class="am-form-group am-form-group-sm">
 				<label for="name" class="am-u-sm-4 am-form-label">ServiceId</label>
 				<div class="am-u-sm-8">
-					<input type="text" class="am-form-field" name="name" />
+					<input type="text" class="am-form-field" name="serviceId" />
 				</div>
 			</div>
 		</li>
@@ -49,6 +49,7 @@
 			    <tr>
 			    	<th><input type="checkbox"/></th>
 			    	<th>Handle</th>
+			    	<th>Weight</th>
 			        <th>ServiceId</th>
 			        <th>Status</th>
 			        <th>IP</th>
@@ -59,7 +60,7 @@
 			        <th>Refresh Time Interval</th>
 			    </tr>
 			</thead>
-			<tbody id="dataList"></tbody>
+			<tbody id="dataList" style="font-size: 14px;"></tbody>
 		</table>
 	</div>
 </div>
@@ -76,8 +77,30 @@
 		{{# } else { }}
 		<button type="button" class="am-btn am-btn-primary am-btn-xs toEnable" data-app="{{ d.list[i].name }}" data-id="{{ d.list[i].instance[j].instanceId }}">Enable</button>
 		{{# } }}
+		<button type="button" class="am-btn am-btn-primary am-btn-xs toSave" data-app="{{ d.list[i].name }}" data-id="{{ d.list[i].instance[j].instanceId }}">Save</button>
+		{{#
+		var metadata = d.list[i].instance[j].metadata;
+		var metedataInfo = "";
+
+		for (var prop in metadata){
+		metedataInfo += prop + " : " + metadata[prop] + "</br>";
+		console.log(prop + ":" + metadata[prop])
+		}
+		}}
+		<button type="button" class="am-btn am-btn-primary am-btn-xs metadata" data-app="{{ d.list[i].name }}" data-id="{{ d.list[i].instance[j].instanceId }}" data-metedatainfo="{{metedataInfo}}">MetaData</button>
 	</td>
-	<td class="">{{ d.list[i].name }}</td>
+	<td class="">
+		{{# var weight = '';
+			if(d.list[i].instance[j].metadata.weight){
+				weight = d.list[i].instance[j].metadata.weight;
+		    }
+
+
+		}}
+		<input type="text" id="{{ d.list[i].instance[j].instanceId }}" value="{{ weight }}" style="width: 50px;"/>
+
+	</td>
+	<td class="">{{ d.list[i].name }} </td>
 	<td class="">{{ d.list[i].instance[j].status }}</td>
 	<td class="">{{ d.list[i].instance[j].ipAddr }}</td>
 	<td class="">{{ d.list[i].instance[j].instanceId }}</td>
@@ -103,7 +126,7 @@
 	 * 纯前端实现的条件过滤
 	 */
 	$('#filterBtn').on('click', function(){
-		var name = $('#conditionForm input[name="name"]').val();
+		var name = $('#conditionForm input[name="serviceId"]').val().trim();
 		var ip = $('#conditionForm input[name="ip"]').val();
 		var status = $('#conditionForm select[name="status"]').val();
 		
@@ -185,7 +208,7 @@
 				type: 'post',
 				dataType: 'json',
 				data: {
-					status: 'OUT_OF_SERVICE',
+					status: 'DOWN',
 					instanceId: id
 				},
 				success: function(data){
@@ -194,6 +217,43 @@
 			});
 		});
 	});
+
+
+    $('#dataList').on('click', '.toSave', function(){
+        var id = $(this).data('id');
+        var app = $(this).data('app');
+
+        var weight = $(this).parent().next().children(":text").val();
+        console.log("-------------"+weight);
+        layer.confirm('确定要修改：' + id + '权重？', function(index){
+            layer.close(index);
+
+            $.ajax({
+                url: '/eureka/metadata/' + app,
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    metadataKey: 'weight',
+                    metadataValue: weight,
+                    instanceId: id
+                },
+                success: function(data){
+                    query();
+                }
+            });
+        });
+    });
+
+
+    $('#dataList').on('click', '.metadata', function(){
+        var metedataInfo = $(this).data('metedatainfo');
+
+        console.log("--------------- "+ metedataInfo);
+
+        layer.msg(metedataInfo);
+    });
+
+
 })();
 </script>
 </body>

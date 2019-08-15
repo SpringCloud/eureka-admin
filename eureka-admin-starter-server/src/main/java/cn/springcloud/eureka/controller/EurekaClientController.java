@@ -1,22 +1,24 @@
 package cn.springcloud.eureka.controller;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import cn.springcloud.eureka.ResultMap;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.appinfo.InstanceInfo.InstanceStatus;
 import com.netflix.discovery.EurekaClient;
 import com.netflix.discovery.shared.Application;
-import cn.springcloud.eureka.ResultMap;
-import cn.springcloud.eureka.http.HttpUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+
+import javax.annotation.Resource;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 @RestController
 @RequestMapping("eureka")
@@ -24,6 +26,10 @@ public class EurekaClientController {
 
 	@Resource
 	private EurekaClient eurekaClient;
+
+
+	@Autowired
+    RestTemplate restTemplate;
 	
 	/**
 	 * @description 获取服务数量和节点数量
@@ -75,10 +81,22 @@ public class EurekaClientController {
 		Application application = eurekaClient.getApplication(appName);
 		InstanceInfo instanceInfo = application.getByInstanceId(instanceId);
 		instanceInfo.setStatus(InstanceStatus.toEnum(status));
-		Map<String, String> headers = new HashMap<>();
-		headers.put("Content-Type", "text/plain");
-//		HttpUtil.post(instanceInfo.getHomePageUrl() + "eureka-admin-client/status", "status=" + status);
-		HttpUtil.post(instanceInfo.getHomePageUrl() + "service-registry/instance-status", status, headers);
+
+		//headers
+		HttpHeaders requestHeaders = new HttpHeaders();
+		requestHeaders.add("Content-Type", "application/vnd.spring-boot.actuator.v2+json;charset=UTF-8");
+		//body
+//		MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
+//		requestBody.add("roundid", "1");
+		//HttpEntity
+		HttpEntity<String> requestEntity = new HttpEntity<String>(null, requestHeaders);
+//		RestTemplate restTemplate = new RestTemplate();
+		//post
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity(instanceInfo.getHomePageUrl() + "actuator/service-registry?status=" + status, requestEntity, String.class);
+		System.out.println(responseEntity.getBody());
+
+//		String result = HttpUtil.post(instanceInfo.getHomePageUrl() + "actuator/service-registry?status=" + ops_status, status,headers);
+//		HttpUtil.post(instanceInfo.getHomePageUrl() + "service-registry/instance-status", status, headers);
 		
 //		List<InstanceInfo> instanceInfos = application.getInstances();
 //		for(InstanceInfo item : instanceInfos){
@@ -92,6 +110,28 @@ public class EurekaClientController {
 //				eurekaClient.getApplications().addApplication(app);
 //			}
 //		}
+		return ResultMap.buildSuccess();
+	}
+
+
+
+	@RequestMapping(value = "metadata/{appName}", method = RequestMethod.POST)
+	public ResultMap metadata(@PathVariable String appName, String instanceId, String metadataKey, String metadataValue) {
+		Application application = eurekaClient.getApplication(appName);
+		InstanceInfo instanceInfo = application.getByInstanceId(instanceId);
+
+		List urls = eurekaClient.getEurekaClientConfig()
+				.getEurekaServerServiceUrls("defaultZone");
+
+		HttpHeaders requestHeaders = new HttpHeaders();
+		requestHeaders.add("Authorization", "Basic ZnJlZW11ZDpmcmVlbXVkMTIz");
+		HttpEntity<String> requestEntity = new HttpEntity<String>(null, requestHeaders);
+
+		String url = String.format("%sapps/%s/%s/metadata?%s=%s",urls.get(0),appName,instanceId,metadataKey,metadataValue);
+
+		restTemplate.put(url,requestEntity);
+
+
 		return ResultMap.buildSuccess();
 	}
 }
